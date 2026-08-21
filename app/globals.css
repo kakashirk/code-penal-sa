@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===== Contenu documentaire importé depuis Google Docs ===== */
+.doc-content {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #212121;
+  overflow-wrap: break-word;
+}
+
+.doc-content h1,
+.doc-content h2,
+.doc-content h3 {
+  font-family: var(--font-merriweather), Georgia, serif;
+  color: #112e51;
+  scroll-margin-top: 5.5rem;
+}
+
+.doc-content h1 {
+  font-size: 1.55rem;
+  font-weight: 900;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #d6d7d9;
+}
+
+.doc-content h1:first-child {
+  margin-top: 0;
+}
+
+.doc-content h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 2rem 0 0.75rem;
+}
+
+.doc-content h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.doc-content p {
+  margin: 0.8rem 0;
+}
+
+.doc-content ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin: 0.8rem 0;
+}
+
+.doc-content ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  margin: 0.8rem 0;
+}
+
+.doc-content li {
+  margin: 0.3rem 0;
+}
+
+.doc-content a {
+  color: #205493;
+  text-decoration: underline;
+}
+
+.doc-content a:hover {
+  color: #112e51;
+}
+
+.doc-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.875rem;
+}
+
+.doc-content th,
+.doc-content td {
+  border: 1px solid #d6d7d9;
+  padding: 0.45rem 0.65rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.doc-content th,
+.doc-content table tr:first-child td {
+  background: #f1f1f1;
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .doc-content table {
+    display: block;
+    overflow-x: auto;
+  }
+}

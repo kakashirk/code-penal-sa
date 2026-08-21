@@ -1,0 +1,28 @@
+{
+  "name": "code-penal-sa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Code Pénal de l'État de San Andreas — SpaceNew Roleplay",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "import": "node scripts/import-content.mjs"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "fuse.js": "^7.1.0",
+    "next": "^15.5.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.0"
+  }
+}
