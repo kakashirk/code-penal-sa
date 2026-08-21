@@ -9,7 +9,7 @@ import path from "node:path";
 
 const DOCS = [
   // Livres
-  { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "1Fnq2UXYGZrfh288HEmmKRGwv2FDiP1JGOLivqKetO3g" },
+  { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "1MBxJ7-55erbOB96OcV0ElJnM_A49Ms-jx4LcrvY_sGI" },
   { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1kPK59am5VxxFTeZpoeFOxxZVb3qQ9gFUnDsjb8ZS17o" },
   { slug: "livre-iii", titre: "Livre III — De la procédure pénale", docId: "13rf-8NP_U0-swvqawzxb0wNBo-pjbCU50w17O0gzOtM" },
   { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1aRs5Uf1mF0jCEPDZQuChAhTZP5Uty4xhuWkAnuR-LI4" },
@@ -23,7 +23,7 @@ const DOCS = [
   { slug: "livre-xii", titre: "Livre XII — Du Code électoral", docId: "1ujQvBe52Vq7J9_CyaYxEtJk7Y_H37Cs0IRKliYk0BVo" },
   { slug: "livre-xiii", titre: "Livre XIII — Des États d'urgence (Defcon)", docId: "17FuK6rBHEMrcYw3VwLsDA4CLOyk9vX9iEQHDCJZjPbc" },
   // Annexes
-  { slug: "annexe-1-manuel-agent", titre: "Annexe 1 — Manuel de procédure de l'Agent", docId: "1jJkZw9iWuzdl9aBsa7udoDB5oMHj332_eDbOlo-U_1A" },
+  { slug: "annexe-1-manuel-agent", titre: "Annexe 1 — Manuel de procédure de l'Agent", docId: "176ft7HXR_NUl9t5tkjVlRZB-5UnXFUyG0iH5rMEM8xw" },
   { slug: "annexe-2-grille", titre: "Annexe 2 — Grille générale des infractions", docId: "14nhZ0S3v6Iyg9Er7CerO2dircoZE0t6PJh7LW8rs8NU" },
   { slug: "annexe-3-enqueteur", titre: "Annexe 3 — Guide de l'Enquêteur et des Mandats", docId: "1qcuF6-bum1FE2XgxsnygCyVaFq5uLVv3a0UE0Uaw7kw" },
   { slug: "annexe-4-avocat", titre: "Annexe 4 — Guide de l'Avocat", docId: "1EfkgMiinrAKlVNjejqiN401EFIwdUzUT3wOvMJgH_Jw" },
@@ -52,8 +52,16 @@ function slugify(text) {
   return s || "section";
 }
 
+// Protocoles autorisés dans les href ; tout le reste (javascript:, data:, vbscript:…) est retiré
+const HREF_AUTORISE = /^(https?:|mailto:|\/(?!\/)|#)/i;
+
 function cleanDocument($) {
-  $("head, style, script, meta, link, title, img, hr").remove();
+  // Balises supprimées avec leur contenu : jamais déballées, même vides
+  $(
+    "head, style, script, noscript, template, meta, link, title, base, img, picture, source, hr, " +
+      "iframe, frame, frameset, object, embed, applet, form, input, button, select, textarea, " +
+      "video, audio, track, svg, math, canvas, map, area, dialog, slot, portal"
+  ).remove();
 
   // Le titre du document Google est exporté en <p class="title"> → h1
   $("p.title").each((_, el) => {
@@ -81,9 +89,15 @@ function cleanDocument($) {
         const q = new URL(href).searchParams.get("q");
         if (q) $(el).attr("href", q);
       } catch {
-        // href conservé tel quel
+        $(el).removeAttr("href");
       }
     }
+  });
+
+  // Liste blanche de protocoles : un href suspect est retiré, le texte du lien reste
+  $("a[href]").each((_, el) => {
+    const href = ($(el).attr("href") ?? "").trim();
+    if (!HREF_AUTORISE.test(href)) $(el).removeAttr("href");
   });
 
   // h4/h5/h6 → h3 (seuls h1-h3 sont conservés pour le sommaire)
@@ -103,6 +117,11 @@ function cleanDocument($) {
     );
     for (const attr of Object.keys(el.attribs ?? {})) {
       if (!keep.has(attr)) $(el).removeAttr(attr);
+    }
+    // colspan/rowspan : uniquement des entiers raisonnables
+    for (const attr of ["colspan", "rowspan"]) {
+      const v = $(el).attr(attr);
+      if (v !== undefined && !/^\d{1,3}$/.test(v)) $(el).removeAttr(attr);
     }
   }
 

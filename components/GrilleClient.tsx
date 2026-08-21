@@ -32,6 +32,8 @@ interface SortState {
 const REGIME_ORDRE: Record<Regime, number> = { A: 0, S: 1, P: 2, F: 3 };
 const REGIME_CLES: Regime[] = ["A", "S", "P", "F"];
 
+const PLAFOND_AMENDES = 5_000_000;
+
 const COLONNES: Array<{ label: string; sortKey?: SortKey; align?: "right" | "center" }> = [
   { label: "Infraction", sortKey: "nom" },
   { label: "Catégorie", sortKey: "categorie" },
@@ -43,8 +45,32 @@ const COLONNES: Array<{ label: string; sortKey?: SortKey; align?: "right" | "cen
   { label: "Réf.", sortKey: "reference" },
 ];
 
+const AGG_GENERALES =
+  "+50 % chacune (art. 21) : récidive, préméditation, bande organisée, otage ou bouclier humain, victime agent ou représentant, victime vulnérable, cruauté.";
+const AGG_SPECIALES =
+  "+25 % chacune (art. 22) : arme non constitutive, arme cat. 3, sans PPA, visage dissimulé, usurpation d'uniforme, Defcon 3+, refus d'obtempérer ou fuite, entrave à l'enquête, mineur impliqué.";
+const ATTENUANTES_TXT =
+  "−10 % chacune (art. 23), sans jamais descendre sous 50 % de la peine calculée après aggravantes.";
+
 const norm = (s: string) =>
   s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+// Amende impossible à totaliser automatiquement : « 75 % du montant »,
+// « / unité », « / victime », « / jour »…
+const amendeManuelle = (inf: Infraction) =>
+  inf.amendeNum === 0 || inf.amendeAffichee.includes("/");
+
+function fmtDollars(n: number): string {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " $";
+}
+
+function fmtMinutes(m: number): string {
+  const mins = Math.round(m);
+  if (mins < 60) return `${mins} min`;
+  const h = Math.floor(mins / 60);
+  const r = mins % 60;
+  return `${mins} min (${h} H${r > 0 ? ` ${r.toString().padStart(2, "0")}` : ""})`;
+}
 
 function comparer(a: Infraction, b: Infraction, key: SortKey): number {
   switch (key) {
@@ -108,9 +134,75 @@ function GroupeFiltres({ label, children }: { label: string; children: ReactNode
   );
 }
 
+function Compteur({
+  label,
+  sousTexte,
+  valeur,
+  max,
+  onChange,
+}: {
+  label: string;
+  sousTexte: string;
+  valeur: number;
+  max: number;
+  onChange: (v: number) => void;
+}) {
+  const bouton =
+    "flex h-8 w-8 items-center justify-center border border-white/40 text-lg font-bold leading-none hover:bg-usa-dark disabled:cursor-not-allowed disabled:opacity-30";
+  return (
+    <div className="border-b border-white/15 pb-3">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-sm font-bold">{label}</span>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => onChange(valeur - 1)}
+            disabled={valeur === 0}
+            aria-label={`Retirer une ${label.toLowerCase()}`}
+            className={bouton}
+          >
+            −
+          </button>
+          <span className="w-8 text-center text-base font-bold tabular-nums">{valeur}</span>
+          <button
+            type="button"
+            onClick={() => onChange(valeur + 1)}
+            disabled={valeur === max}
+            aria-label={`Ajouter une ${label.toLowerCase()}`}
+            className={bouton}
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <p className="mt-1 text-[11px] leading-snug text-white/70">{sousTexte}</p>
+    </div>
+  );
+}
+
 const celluleBase = "border-b border-r border-usa-gray-medium px-2 py-1.5 align-top";
 
-export default function GrilleClient() {
+function LienRef({
+  reference,
+  refLinks,
+  className,
+  children,
+}: {
+  reference: string;
+  refLinks: Record<string, string>;
+  className: string;
+  children: ReactNode;
+}) {
+  const href = refLinks[reference];
+  if (!href) return <span className={className}>{children}</span>;
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+      {children}
+    </a>
+  );
+}
+
+export default function GrilleClient({ refLinks }: { refLinks: Record<string, string> }) {
   const searchParams = useSearchParams();
   const [q, setQ] = useState(searchParams.get("q") ?? "");
   const [cats, setCats] = useState<Set<string>>(new Set());
@@ -118,6 +210,14 @@ export default function GrilleClient() {
   const [regimes, setRegimes] = useState<Set<Regime>>(new Set());
   const [sort, setSort] = useState<SortState | null>(null);
   const [filtresOuverts, setFiltresOuverts] = useState(false);
+
+  // Calculateur — la sélection est indépendante des filtres et leur survit
+  const [selection, setSelection] = useState<Set<string>>(new Set());
+  const [detailOuvert, setDetailOuvert] = useState(false);
+  const [aggGen, setAggGen] = useState(0);
+  const [aggSpe, setAggSpe] = useState(0);
+  const [attenuantes, setAttenuantes] = useState(0);
+  const [tentative, setTentative] = useState(false);
 
   const lignes = useMemo(() => {
     const nq = norm(q.trim());
@@ -138,10 +238,63 @@ export default function GrilleClient() {
     return [...filtrees].sort((a, b) => comparer(a, b, sort.key) * sort.dir);
   }, [q, cats, niveaux, regimes, sort]);
 
+  const selInfractions = useMemo(
+    () => INFRACTIONS.filter((inf) => selection.has(inf.nom)),
+    [selection]
+  );
+
+  const calc = useMemo(() => {
+    const amendesAuto = selInfractions.filter((i) => !amendeManuelle(i));
+    const amendesManuelles = selInfractions.filter(amendeManuelle);
+    const totalBrut = amendesAuto.reduce((s, i) => s + i.amendeNum, 0);
+    const plafondAtteint = totalBrut > PLAFOND_AMENDES;
+    const totalAmendes = Math.min(totalBrut, PLAFOND_AMENDES);
+
+    const federale = selInfractions.some((i) => i.regime === "F");
+    const base = federale ? 0 : selInfractions.reduce((s, i) => s + i.peineMinutes, 0);
+    const pctAgg = aggGen * 50 + aggSpe * 25;
+    const apresAgg = base * (1 + pctAgg / 100);
+    const sansPlancher = apresAgg * (1 - (attenuantes * 10) / 100);
+    const plancher = apresAgg * 0.5;
+    const plancherApplique = attenuantes > 0 && sansPlancher < plancher;
+    const apresAtt = Math.max(sansPlancher, plancher);
+    const finale = tentative ? apresAtt / 2 : apresAtt;
+
+    const regimeMax = selInfractions.reduce<Regime>(
+      (max, i) => (REGIME_ORDRE[i.regime] > REGIME_ORDRE[max] ? i.regime : max),
+      "A"
+    );
+
+    return {
+      amendesManuelles,
+      totalAmendes,
+      plafondAtteint,
+      federale,
+      base,
+      pctAgg,
+      apresAgg,
+      plancherApplique,
+      apresAtt,
+      finale,
+      regimeMax,
+    };
+  }, [selInfractions, aggGen, aggSpe, attenuantes, tentative]);
+
   const nbFiltres = cats.size + niveaux.size + regimes.size;
 
   const toggleSort = (key: SortKey) => {
     setSort((s) => (s && s.key === key ? { key, dir: s.dir === 1 ? -1 : 1 } : { key, dir: 1 }));
+  };
+
+  const toggleSelection = (nom: string) => setSelection((s) => toggleDansSet(s, nom));
+
+  const toutEffacer = () => {
+    setSelection(new Set());
+    setDetailOuvert(false);
+    setAggGen(0);
+    setAggSpe(0);
+    setAttenuantes(0);
+    setTentative(false);
   };
 
   const reinitialiser = () => {
@@ -224,6 +377,20 @@ export default function GrilleClient() {
         </div>
       </div>
 
+      {/* Aide au calculateur */}
+      <div className="mt-3 border-l-[6px] border-l-usa-green bg-[#e7f4e4] p-3 text-sm">
+        Cochez les infractions constatées pour calculer la peine totale selon la règle du
+        concours d&rsquo;infractions (
+        <LienRef
+          reference="I-20"
+          refLinks={refLinks}
+          className="font-bold text-usa-dark underline hover:text-usa-darkest"
+        >
+          Livre I, art. 20
+        </LienRef>
+        ).
+      </div>
+
       {/* Compteur + tri mobile */}
       <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-usa-gray-dark" aria-live="polite">
@@ -266,6 +433,12 @@ export default function GrilleClient() {
         <table className="w-full border-separate [border-spacing:0] text-[13px] leading-snug">
           <thead>
             <tr>
+              <th
+                scope="col"
+                className="sticky left-0 top-0 z-30 w-10 border-b-2 border-r border-[#2d4972] bg-usa-darkest px-2 py-2"
+              >
+                <span className="sr-only">Sélection</span>
+              </th>
               {COLONNES.map((col, i) => (
                 <th
                   key={col.label}
@@ -278,7 +451,7 @@ export default function GrilleClient() {
                       : undefined
                   }
                   className={`sticky top-0 whitespace-nowrap border-b-2 border-r border-[#2d4972] bg-usa-darkest px-2 py-2 text-left align-bottom font-bold text-white ${
-                    i === 0 ? "left-0 z-30 min-w-[15rem]" : "z-20"
+                    i === 0 ? "left-10 z-30 min-w-[15rem]" : "z-20"
                   }`}
                 >
                   {col.sortKey ? (
@@ -311,44 +484,67 @@ export default function GrilleClient() {
             </tr>
           </thead>
           <tbody>
-            {lignes.map((inf, i) => (
-              <tr
-                key={inf.nom}
-                className={`${i % 2 === 1 ? "bg-[#f9f9f9]" : "bg-white"} hover:bg-usa-gold-light`}
-              >
-                <td
-                  className={`${celluleBase} sticky left-0 z-10 bg-inherit font-semibold text-usa-darkest`}
+            {lignes.map((inf, i) => {
+              const estSel = selection.has(inf.nom);
+              return (
+                <tr
+                  key={inf.nom}
+                  className={`${
+                    estSel ? "bg-[#d9e8f6]" : i % 2 === 1 ? "bg-[#f9f9f9]" : "bg-white"
+                  } hover:bg-usa-gold-light`}
                 >
-                  {inf.nom}
-                </td>
-                <td className={`${celluleBase} whitespace-nowrap`}>{inf.categorie}</td>
-                <td className={`${celluleBase} text-center`}>
-                  <NiveauBadge niveau={inf.niveau} />
-                </td>
-                <td className={`${celluleBase} whitespace-nowrap text-right tabular-nums`}>
-                  {inf.amendeAffichee}
-                </td>
-                <td className={`${celluleBase} whitespace-nowrap text-right tabular-nums`}>
-                  {inf.peineAffichee}
-                </td>
-                <td className={`${celluleBase} whitespace-nowrap`}>
-                  {REGIME_LABELS[inf.regime]}
-                </td>
-                <td className={`${celluleBase} min-w-[15rem]`}>
-                  {inf.complementaires === "—" ? (
-                    <span className="text-usa-gray-dark">—</span>
-                  ) : (
-                    inf.complementaires
-                  )}
-                </td>
-                <td className={`${celluleBase} whitespace-nowrap tabular-nums`}>
-                  {inf.reference}
-                </td>
-              </tr>
-            ))}
+                  <td className={`${celluleBase} sticky left-0 z-10 bg-inherit text-center`}>
+                    <input
+                      type="checkbox"
+                      checked={estSel}
+                      onChange={() => toggleSelection(inf.nom)}
+                      aria-label={`Sélectionner ${inf.nom}`}
+                      className="h-4 w-4 accent-usa-dark align-middle"
+                    />
+                  </td>
+                  <td
+                    className={`${celluleBase} sticky left-10 z-10 bg-inherit font-semibold text-usa-darkest`}
+                  >
+                    {inf.nom}
+                  </td>
+                  <td className={`${celluleBase} whitespace-nowrap`}>{inf.categorie}</td>
+                  <td className={`${celluleBase} text-center`}>
+                    <NiveauBadge niveau={inf.niveau} />
+                  </td>
+                  <td className={`${celluleBase} whitespace-nowrap text-right tabular-nums`}>
+                    {inf.amendeAffichee}
+                  </td>
+                  <td className={`${celluleBase} whitespace-nowrap text-right tabular-nums`}>
+                    {inf.peineAffichee}
+                  </td>
+                  <td className={`${celluleBase} whitespace-nowrap`}>
+                    {REGIME_LABELS[inf.regime]}
+                  </td>
+                  <td className={`${celluleBase} min-w-[15rem]`}>
+                    {inf.complementaires === "—" ? (
+                      <span className="text-usa-gray-dark">—</span>
+                    ) : (
+                      inf.complementaires
+                    )}
+                  </td>
+                  <td className={`${celluleBase} whitespace-nowrap tabular-nums`}>
+                    <LienRef
+                      reference={inf.reference}
+                      refLinks={refLinks}
+                      className="text-usa-dark underline hover:text-usa-darkest"
+                    >
+                      {inf.reference}
+                    </LienRef>
+                  </td>
+                </tr>
+              );
+            })}
             {lignes.length === 0 && (
               <tr>
-                <td colSpan={COLONNES.length} className="bg-white px-4 py-8 text-center text-sm text-usa-gray-dark">
+                <td
+                  colSpan={COLONNES.length + 1}
+                  className="bg-white px-4 py-8 text-center text-sm text-usa-gray-dark"
+                >
                   Aucune infraction ne correspond à ces critères.
                 </td>
               </tr>
@@ -359,57 +555,308 @@ export default function GrilleClient() {
 
       {/* Cartes (mobile) */}
       <ul className="mt-2 space-y-3 md:hidden">
-        {lignes.map((inf) => (
-          <li key={inf.nom} className="border border-usa-gray-medium bg-white">
-            <div className="flex items-start justify-between gap-2 border-b border-usa-gray-medium bg-usa-gray px-3 py-2">
-              <p className="font-bold leading-tight text-usa-darkest">{inf.nom}</p>
-              <NiveauBadge niveau={inf.niveau} />
-            </div>
-            <dl className="grid grid-cols-2 gap-x-3 gap-y-2 px-3 py-2.5 text-sm">
-              <div>
-                <dt className="text-[11px] font-bold uppercase tracking-wide text-usa-gray-dark">
-                  Amende
-                </dt>
-                <dd className="font-semibold tabular-nums">{inf.amendeAffichee}</dd>
+        {lignes.map((inf) => {
+          const estSel = selection.has(inf.nom);
+          return (
+            <li
+              key={inf.nom}
+              className={`border bg-white ${
+                estSel ? "border-usa-dark" : "border-usa-gray-medium"
+              }`}
+            >
+              <div
+                className={`flex items-start justify-between gap-2 border-b px-3 py-2 ${
+                  estSel
+                    ? "border-usa-dark bg-[#d9e8f6]"
+                    : "border-usa-gray-medium bg-usa-gray"
+                }`}
+              >
+                <label className="flex min-w-0 items-start gap-2.5">
+                  <input
+                    type="checkbox"
+                    checked={estSel}
+                    onChange={() => toggleSelection(inf.nom)}
+                    aria-label={`Sélectionner ${inf.nom}`}
+                    className="mt-0.5 h-5 w-5 shrink-0 accent-usa-dark"
+                  />
+                  <span className="font-bold leading-tight text-usa-darkest">{inf.nom}</span>
+                </label>
+                <NiveauBadge niveau={inf.niveau} />
               </div>
-              <div>
-                <dt className="text-[11px] font-bold uppercase tracking-wide text-usa-gray-dark">
-                  Peine
-                </dt>
-                <dd className="font-semibold tabular-nums">{inf.peineAffichee}</dd>
-              </div>
-              <div>
-                <dt className="text-[11px] font-bold uppercase tracking-wide text-usa-gray-dark">
-                  Catégorie
-                </dt>
-                <dd>{inf.categorie}</dd>
-              </div>
-              <div>
-                <dt className="text-[11px] font-bold uppercase tracking-wide text-usa-gray-dark">
-                  Régime
-                </dt>
-                <dd>{REGIME_LABELS[inf.regime]}</dd>
-              </div>
-              {inf.complementaires !== "—" && (
-                <div className="col-span-2">
+              <dl className="grid grid-cols-2 gap-x-3 gap-y-2 px-3 py-2.5 text-sm">
+                <div>
                   <dt className="text-[11px] font-bold uppercase tracking-wide text-usa-gray-dark">
-                    Peines complémentaires
+                    Amende
                   </dt>
-                  <dd>{inf.complementaires}</dd>
+                  <dd className="font-semibold tabular-nums">{inf.amendeAffichee}</dd>
                 </div>
-              )}
-              <div className="col-span-2 text-xs text-usa-gray-dark">
-                Référence : {inf.reference}
-              </div>
-            </dl>
-          </li>
-        ))}
+                <div>
+                  <dt className="text-[11px] font-bold uppercase tracking-wide text-usa-gray-dark">
+                    Peine
+                  </dt>
+                  <dd className="font-semibold tabular-nums">{inf.peineAffichee}</dd>
+                </div>
+                <div>
+                  <dt className="text-[11px] font-bold uppercase tracking-wide text-usa-gray-dark">
+                    Catégorie
+                  </dt>
+                  <dd>{inf.categorie}</dd>
+                </div>
+                <div>
+                  <dt className="text-[11px] font-bold uppercase tracking-wide text-usa-gray-dark">
+                    Régime
+                  </dt>
+                  <dd>{REGIME_LABELS[inf.regime]}</dd>
+                </div>
+                {inf.complementaires !== "—" && (
+                  <div className="col-span-2">
+                    <dt className="text-[11px] font-bold uppercase tracking-wide text-usa-gray-dark">
+                      Peines complémentaires
+                    </dt>
+                    <dd>{inf.complementaires}</dd>
+                  </div>
+                )}
+                <div className="col-span-2 text-xs text-usa-gray-dark">
+                  Référence :{" "}
+                  <LienRef
+                    reference={inf.reference}
+                    refLinks={refLinks}
+                    className="text-usa-dark underline hover:text-usa-darkest"
+                  >
+                    {inf.reference}
+                  </LienRef>
+                </div>
+              </dl>
+            </li>
+          );
+        })}
         {lignes.length === 0 && (
           <li className="border border-usa-gray-medium bg-white p-4 text-center text-sm text-usa-gray-dark">
             Aucune infraction ne correspond à ces critères.
           </li>
         )}
       </ul>
+
+      {/* Réserve d'espace sous la barre de total fixe */}
+      {selection.size > 0 && <div aria-hidden="true" className="h-44 md:h-24" />}
+
+      {/* Panneau de total (calculateur) */}
+      {selection.size > 0 && (
+        <div
+          className="fixed inset-x-0 bottom-0 z-40 border-t-4 border-usa-gold bg-usa-darkest text-white shadow-[0_-4px_16px_rgba(0,0,0,0.35)]"
+          role="region"
+          aria-label="Calculateur de peine"
+        >
+          {detailOuvert && (
+            <div className="max-h-[62vh] overflow-y-auto border-b border-white/20">
+              <div className="mx-auto grid max-w-site gap-6 px-4 py-4 lg:grid-cols-[minmax(0,1fr)_23rem]">
+                {/* Infractions retenues */}
+                <section aria-label="Infractions retenues">
+                  <h3 className="mb-1 text-xs font-bold uppercase tracking-wide text-usa-gold">
+                    Infractions retenues
+                  </h3>
+                  <ul className="divide-y divide-white/15">
+                    {selInfractions.map((inf) => (
+                      <li key={inf.nom} className="flex items-start gap-3 py-2 text-sm">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-semibold leading-snug">{inf.nom}</p>
+                          <p className="mt-0.5 text-[12px] leading-snug text-white/75">
+                            <span className="tabular-nums">{inf.amendeAffichee}</span>
+                            {amendeManuelle(inf) && (
+                              <strong className="text-usa-gold">
+                                {" "}
+                                — montant à calculer manuellement
+                              </strong>
+                            )}
+                            {" · "}
+                            {inf.regime === "F" ? (
+                              <span className="font-bold">Fédérale</span>
+                            ) : inf.peineAffichee === "—" ? (
+                              "sans détention"
+                            ) : (
+                              <span className="tabular-nums">{inf.peineAffichee}</span>
+                            )}
+                            {" · "}
+                            <LienRef
+                              reference={inf.reference}
+                              refLinks={refLinks}
+                              className="underline hover:text-white"
+                            >
+                              Voir l&rsquo;article ({inf.reference}) ↗
+                            </LienRef>
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => toggleSelection(inf.nom)}
+                          aria-label={`Retirer ${inf.nom}`}
+                          className="flex h-7 w-7 shrink-0 items-center justify-center border border-white/40 font-bold hover:bg-usa-red"
+                        >
+                          ✕
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                  {calc.amendesManuelles.length > 0 && (
+                    <p className="mt-2 border-l-4 border-usa-gold bg-white/10 p-2 text-[12px] leading-snug">
+                      {calc.amendesManuelles.length > 1
+                        ? `${calc.amendesManuelles.length} amendes dépendent du montant ou de la quantité en cause`
+                        : "1 amende dépend du montant ou de la quantité en cause"}{" "}
+                      : elles sont à calculer manuellement et ne sont pas comptées dans le
+                      total ci-dessous.
+                    </p>
+                  )}
+                </section>
+
+                {/* Modificateurs + calcul */}
+                <section aria-label="Modificateurs et calcul" className="space-y-3">
+                  <h3 className="text-xs font-bold uppercase tracking-wide text-usa-gold">
+                    Modificateurs (Livre I)
+                  </h3>
+                  <Compteur
+                    label="Aggravantes générales"
+                    sousTexte={AGG_GENERALES}
+                    valeur={aggGen}
+                    max={7}
+                    onChange={setAggGen}
+                  />
+                  <Compteur
+                    label="Aggravantes spéciales"
+                    sousTexte={AGG_SPECIALES}
+                    valeur={aggSpe}
+                    max={9}
+                    onChange={setAggSpe}
+                  />
+                  <Compteur
+                    label="Atténuantes"
+                    sousTexte={ATTENUANTES_TXT}
+                    valeur={attenuantes}
+                    max={5}
+                    onChange={setAttenuantes}
+                  />
+                  <label className="flex items-start gap-2.5 border-b border-white/15 pb-3 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={tentative}
+                      onChange={(e) => setTentative(e.target.checked)}
+                      className="mt-0.5 h-4 w-4 accent-usa-gold"
+                    />
+                    <span>
+                      <strong>Tentative</strong>
+                      <span className="block text-[11px] text-white/70">
+                        Art. 24 : la détention est divisée par 2.
+                      </span>
+                    </span>
+                  </label>
+
+                  {calc.federale ? (
+                    <p className="bg-usa-red p-3 text-sm font-bold leading-snug">
+                      PEINE FÉDÉRALE — durée fixée par le Juge. Les amendes restent
+                      cumulées ci-dessous.
+                    </p>
+                  ) : (
+                    <div className="border border-white/25 bg-white/5 p-3 text-sm">
+                      <h4 className="mb-1.5 text-xs font-bold uppercase tracking-wide text-usa-gold">
+                        Calcul de la détention (art. 19)
+                      </h4>
+                      <dl className="space-y-1 tabular-nums">
+                        <div className="flex justify-between gap-3">
+                          <dt>Base cumulée (art. 20)</dt>
+                          <dd className="font-semibold">{fmtMinutes(calc.base)}</dd>
+                        </div>
+                        {calc.pctAgg > 0 && (
+                          <div className="flex justify-between gap-3">
+                            <dt>Aggravantes (+{calc.pctAgg} %)</dt>
+                            <dd className="font-semibold">{fmtMinutes(calc.apresAgg)}</dd>
+                          </div>
+                        )}
+                        {attenuantes > 0 && (
+                          <div className="flex justify-between gap-3">
+                            <dt>
+                              Atténuantes (−{attenuantes * 10} %)
+                              {calc.plancherApplique && (
+                                <span className="block text-[11px] text-usa-gold">
+                                  plancher 50 % appliqué
+                                </span>
+                              )}
+                            </dt>
+                            <dd className="font-semibold">{fmtMinutes(calc.apresAtt)}</dd>
+                          </div>
+                        )}
+                        {tentative && (
+                          <div className="flex justify-between gap-3">
+                            <dt>Tentative (÷ 2)</dt>
+                            <dd className="font-semibold">{fmtMinutes(calc.finale)}</dd>
+                          </div>
+                        )}
+                        <div className="flex justify-between gap-3 border-t border-white/25 pt-1.5 text-base">
+                          <dt className="font-bold">Détention totale</dt>
+                          <dd className="font-bold text-usa-gold">
+                            {fmtMinutes(calc.finale)}
+                          </dd>
+                        </div>
+                      </dl>
+                    </div>
+                  )}
+                </section>
+              </div>
+            </div>
+          )}
+
+          {/* Barre compacte */}
+          <div className="mx-auto flex max-w-site flex-wrap items-center gap-x-5 gap-y-1.5 px-4 py-2.5 text-sm">
+            <p>
+              <strong className="text-base tabular-nums">{selection.size}</strong>{" "}
+              infraction{selection.size > 1 ? "s" : ""}
+            </p>
+            <p>
+              Amendes :{" "}
+              <strong className="tabular-nums">{fmtDollars(calc.totalAmendes)}</strong>
+              {calc.plafondAtteint && (
+                <strong className="ml-1.5 text-usa-gold">plafond atteint</strong>
+              )}
+              {calc.amendesManuelles.length > 0 && (
+                <span className="ml-1.5 text-white/70">
+                  + {calc.amendesManuelles.length} à calculer
+                </span>
+              )}
+            </p>
+            {calc.federale ? (
+              <p className="bg-usa-red px-2 py-0.5 font-bold">
+                PEINE FÉDÉRALE — durée fixée par le Juge
+              </p>
+            ) : (
+              <p>
+                Détention :{" "}
+                <strong className="tabular-nums">{fmtMinutes(calc.finale)}</strong>
+              </p>
+            )}
+            <p className="text-white/80">Régime : {REGIME_LABELS[calc.regimeMax]}</p>
+            <div className="ml-auto flex gap-2">
+              <button
+                type="button"
+                onClick={() => setDetailOuvert((v) => !v)}
+                aria-expanded={detailOuvert}
+                className="flex items-center gap-1.5 border border-white/50 px-3 py-1.5 font-bold hover:bg-usa-dark"
+              >
+                Détail
+                <IconChevron
+                  className={`h-3.5 w-3.5 transition-transform ${
+                    detailOuvert ? "" : "rotate-180"
+                  }`}
+                />
+              </button>
+              <button
+                type="button"
+                onClick={toutEffacer}
+                className="border border-white/50 px-3 py-1.5 font-bold hover:bg-usa-red"
+              >
+                Tout effacer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
