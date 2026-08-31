@@ -12,7 +12,7 @@ const DOCS = [
   { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "1MBxJ7-55erbOB96OcV0ElJnM_A49Ms-jx4LcrvY_sGI" },
   { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1kPK59am5VxxFTeZpoeFOxxZVb3qQ9gFUnDsjb8ZS17o" },
   { slug: "livre-iii", titre: "Livre III — De la procédure pénale", docId: "13rf-8NP_U0-swvqawzxb0wNBo-pjbCU50w17O0gzOtM" },
-  { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1aRs5Uf1mF0jCEPDZQuChAhTZP5Uty4xhuWkAnuR-LI4" },
+  { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1zOaF7TR2TaCV4rdQn78G-mZQ3AWEtCG2XM8HGQSjZhI" },
   { slug: "livre-v", titre: "Livre V — Des infractions contre les personnes et les biens", docId: "1N60LhWsXmevAHzxYLARhO8e8FZ69FwCmM7mJy5NZLEk" },
   { slug: "livre-vi", titre: "Livre VI — Des infractions économiques et financières", docId: "1DFE3Nice0IhzmwUVQayLi8qrGeg0J8xWLavTGnZiYYM" },
   { slug: "livre-vii", titre: "Livre VII — Des infractions spéciales", docId: "1v4zhZEoPuMVn5v2im3JE8DeGviHeJo5Z-1FjI_A3GyM" },
