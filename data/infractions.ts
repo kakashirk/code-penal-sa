@@ -214,7 +214,6 @@ Vente illégale de matériel médical;Santé & environnement;2;50 000 $;50000;20
 Violation du secret médical;Santé & environnement;2;50 000 $;50000;25 Min;25;S;Signalement au SAMS;VII-7
 Exercice illégal de la médecine;Santé & environnement;3;80 000 $;80000;30 Min;30;P;Interdiction d'exercer · saisie;VII-7
 Falsification d'un dossier médical;Santé & environnement;3;80 000 $;80000;40 Min;40;P;Destitution si SAMS;VII-7
-Braconnage;Santé & environnement;2;20 000 $;20000;30 Min;30;S;× quantité · saisie;VII-9
 Pollution volontaire d'un milieu naturel;Santé & environnement;2;25 000 $;25000;15 Min;15;S;Remise en état;VII-9
 Violation du silence électoral;Cyber & élections;1;25 000 $;25000;—;0;A;Retrait des supports;VII-11
 Entrave au droit de vote;Cyber & élections;2;100 000 $;100000;25 Min;25;S;—;VII-11

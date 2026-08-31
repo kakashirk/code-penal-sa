@@ -30,7 +30,7 @@ const DOCS = [
   { slug: "annexe-5-doj", titre: "Annexe 5 — Guide du DOJ (Procureur & Juge)", docId: "11xDCt6bLs_oX39Va3mO_onAcwX-VvxD6A91NQY88Tao" },
   { slug: "annexe-6-citoyen", titre: "Annexe 6 — Guide du Citoyen", docId: "1pyG5ss4dXOx2gd6PPUkOjyWrj8FDIkcU9xYbHpMYSrM" },
   { slug: "annexe-7-glossaire", titre: "Annexe 7 — Glossaire juridique", docId: "14rX3st4GjnJHRhw4sgf6rrVr0FfaZCa6fU00QusPcqs" },
-  { slug: "annexe-8-decrets", titre: "Annexe 8 — Recueil des décrets de l'État", docId: "1gJ4_mI1OlLnhaGm5wXuXqcwUe37gmbXrq55H_gaJB2Y" },
+  { slug: "annexe-8-decrets", titre: "Annexe 8 — Recueil des décrets de l'État", docId: "1dd5xzzdsPIm5dF_DhupgZS9xCrwVWHh_hAvlybayfQ0" },
 ];
 
 const OUT_DIR = path.join(process.cwd(), "content");
