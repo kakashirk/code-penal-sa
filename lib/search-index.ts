@@ -123,7 +123,7 @@ export function buildSearchIndex(): SearchEntry[] {
       titre: inf.nom,
       description: `${inf.categorie} · ${inf.amendeAffichee}${peine} · ${REGIME_LABELS[inf.regime]}`,
       href: `/grille?q=${encodeURIComponent(inf.nom)}`,
-      motsCles: getMotsCles(inf.nom),
+      motsCles: getMotsCles(inf.nom, inf.categorie),
       niveau: inf.niveau,
       reference: inf.reference,
     });

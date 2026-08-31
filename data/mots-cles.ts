@@ -1,6 +1,8 @@
 // Synonymes et expressions courantes des joueurs, associés aux infractions
 // pour la recherche en langage naturel.
 
+import type { Categorie } from "./infractions";
+
 const MOTS_EXACTS: Record<string, string[]> = {
   "Escroquerie ≤ 90 000 $": ["arnaque", "arnaquer", "scam", "entourloupe", "fraude", "se faire avoir"],
   "Escroquerie > 90 000 $": ["arnaque", "grosse arnaque", "scam", "fraude massive"],
@@ -125,19 +127,20 @@ const MOTS_EXACTS: Record<string, string[]> = {
   "Entrave aux services publics": ["bloquer les secours", "gêner les pompiers"],
 };
 
-const REGLES: Array<{ test: (nom: string) => boolean; mots: string[] }> = [
+const REGLES: Array<{ test: (nom: string, categorie: Categorie) => boolean; mots: string[] }> = [
   { test: (n) => n.startsWith("Vol à main armée"), mots: ["braquage", "hold-up", "braco", "vol à main armée"] },
   { test: (n) => n.startsWith("Excès de vitesse"), mots: ["vitesse", "radar", "flash", "rouler vite"] },
   { test: (n) => n.includes("otage"), mots: ["otage"] },
-  { test: (n) => n.includes("stupéfiants") || n.includes("weed") || n.includes("LSD") || n.includes("cocaïne") || n.includes("méthamphétamine"), mots: ["drogue", "stup"] },
+  // Toute la catégorie Stupéfiants, plus la conduite sous stupéfiants (catégorie Route).
+  { test: (n, c) => c === "Stupéfiants" || n.includes("stupéfiants"), mots: ["drogue", "stup"] },
   { test: (n) => n.includes("Homicide"), mots: ["homicide"] },
   { test: (n) => n.includes("évasion") || n === "Cavale", mots: ["évadé"] },
 ];
 
-export function getMotsCles(nom: string): string[] {
+export function getMotsCles(nom: string, categorie: Categorie): string[] {
   const mots = new Set<string>(MOTS_EXACTS[nom] ?? []);
   for (const regle of REGLES) {
-    if (regle.test(nom)) {
+    if (regle.test(nom, categorie)) {
       for (const mot of regle.mots) mots.add(mot);
     }
   }
