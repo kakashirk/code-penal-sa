@@ -15,7 +15,7 @@ const DOCS = [
   { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1zOaF7TR2TaCV4rdQn78G-mZQ3AWEtCG2XM8HGQSjZhI" },
   { slug: "livre-v", titre: "Livre V — Des infractions contre les personnes et les biens", docId: "1N60LhWsXmevAHzxYLARhO8e8FZ69FwCmM7mJy5NZLEk" },
   { slug: "livre-vi", titre: "Livre VI — Des infractions économiques et financières", docId: "1DFE3Nice0IhzmwUVQayLi8qrGeg0J8xWLavTGnZiYYM" },
-  { slug: "livre-vii", titre: "Livre VII — Des infractions spéciales", docId: "1v4zhZEoPuMVn5v2im3JE8DeGviHeJo5Z-1FjI_A3GyM" },
+  { slug: "livre-vii", titre: "Livre VII — Des infractions spéciales", docId: "1sIXUYSe0u43CcKHSSPmTkGBzoGcQuAjaI54c62xNYl8" },
   { slug: "livre-viii", titre: "Livre VIII — Du Code civil", docId: "1QgsZrvZzKWsLZyNuS6m1sDmvdPMHClp6Vf_Dc-wgYpI" },
   { slug: "livre-ix", titre: "Livre IX — Du Code du travail et des entreprises", docId: "1PgPvnXnBgTqa7kBimGI8T0JybVYxAinGz3vb8UMKr-Q" },
   { slug: "livre-x", titre: "Livre X — Du Code de la santé", docId: "15_TZIVCfiMaYFwL0Vn14ACQj_3cE4Ciaa4llXpUK-w4" },
@@ -24,7 +24,7 @@ const DOCS = [
   { slug: "livre-xiii", titre: "Livre XIII — Des États d'urgence (Defcon)", docId: "17FuK6rBHEMrcYw3VwLsDA4CLOyk9vX9iEQHDCJZjPbc" },
   // Annexes
   { slug: "annexe-1-manuel-agent", titre: "Annexe 1 — Manuel de procédure de l'Agent", docId: "176ft7HXR_NUl9t5tkjVlRZB-5UnXFUyG0iH5rMEM8xw" },
-  { slug: "annexe-2-grille", titre: "Annexe 2 — Grille générale des infractions", docId: "19eZvvsn2Alu6D37sWXPFoKy34NB1dLtiGki6D2FDC9U" },
+  { slug: "annexe-2-grille", titre: "Annexe 2 — Grille générale des infractions", docId: "1ilZuawq-_oYBqMIScO-cFXwjHt2LJldNcsBf3K4fD-c" },
   { slug: "annexe-3-enqueteur", titre: "Annexe 3 — Guide de l'Enquêteur et des Mandats", docId: "1qcuF6-bum1FE2XgxsnygCyVaFq5uLVv3a0UE0Uaw7kw" },
   { slug: "annexe-4-avocat", titre: "Annexe 4 — Guide de l'Avocat", docId: "1EfkgMiinrAKlVNjejqiN401EFIwdUzUT3wOvMJgH_Jw" },
   { slug: "annexe-5-doj", titre: "Annexe 5 — Guide du DOJ (Procureur & Juge)", docId: "11xDCt6bLs_oX39Va3mO_onAcwX-VvxD6A91NQY88Tao" },
