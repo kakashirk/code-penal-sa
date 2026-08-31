@@ -129,7 +129,7 @@ const REGLES: Array<{ test: (nom: string) => boolean; mots: string[] }> = [
   { test: (n) => n.startsWith("Vol à main armée"), mots: ["braquage", "hold-up", "braco", "vol à main armée"] },
   { test: (n) => n.startsWith("Excès de vitesse"), mots: ["vitesse", "radar", "flash", "rouler vite"] },
   { test: (n) => n.includes("otage"), mots: ["otage"] },
-  { test: (n) => n.includes("stupéfiants") || n.includes("weed") || n.includes("cocaïne") || n.includes("méthamphétamine") || n.includes("opium"), mots: ["drogue", "stup"] },
+  { test: (n) => n.includes("stupéfiants") || n.includes("weed") || n.includes("LSD") || n.includes("cocaïne") || n.includes("méthamphétamine"), mots: ["drogue", "stup"] },
   { test: (n) => n.includes("Homicide"), mots: ["homicide"] },
   { test: (n) => n.includes("évasion") || n === "Cavale", mots: ["évadé"] },
 ];
