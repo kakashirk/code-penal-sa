@@ -185,12 +185,12 @@ Falsification de documents officiels;Économique;3;80 000 $;80000;40 Min;40;P;Sa
 Emploi non contractualisé;Économique;1;50 000 $;50000;—;0;A;Régularisation;VI-9
 Défaut de paiement du salaire;Économique;1;50 000 $;50000;—;0;A;Rappel des salaires;VI-9
 Licenciement abusif;Économique;1;80 000 $;80000;—;0;A;50 % amende → victime;VI-9
-Refus de transmission de comptabilité;Économique;1;150 000 $;150000;—;0;A;Transmission sous astreinte;VI-9
+Refus de transmission de comptabilité;Économique;2;150 000 $;150000;—;0;A;Transmission sous astreinte;VI-9
 Entrave au fonctionnement d'une entreprise;Économique;2;12 000 $;12000;20 Min;20;S;—;VI-10
 Abus de biens sociaux;Économique;3;100 000 $;100000;40 Min;40;P;Remboursement · interdiction de gérer;VI-10
 Comptabilité falsifiée;Économique;3;120 000 $;120000;40 Min;40;P;Transmission sous astreinte;VI-10
 Fraude aux subventions d'État;Économique;3;100 000 $;100000;40 Min;40;P;Remboursement intégral;VI-11
-Revente anticipée d'un fonds de commerce;Économique;1;3 000 000 $;3000000;—;0;A;—;IX-10
+Revente anticipée d'un fonds de commerce;Économique;2;3 000 000 $;3000000;—;0;A;—;IX-10
 Intrusion dans un système financier de l'État;Économique;3;150 000 $;150000;50 Min;50;P;Saisie matériel;VI-12
 Atteinte majeure aux systèmes financiers;Économique;4;500 000 $;500000;Fédérale;999;F;Saisie totalité des biens;VI-12
 Usurpation d'identité ou de fonction;Probité;2;15 000 $;15000;20 Min;20;S;—;VII-3
