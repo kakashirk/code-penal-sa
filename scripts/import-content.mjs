@@ -23,13 +23,13 @@ const DOCS = [
   { slug: "livre-xii", titre: "Livre XII — Du Code électoral", docId: "1hGe4nYrVUZZ0iyyptAAxOT5Ysfm6_5xdKGKLXRH09Kc" },
   { slug: "livre-xiii", titre: "Livre XIII — Des États d'urgence (Defcon)", docId: "17FuK6rBHEMrcYw3VwLsDA4CLOyk9vX9iEQHDCJZjPbc" },
   // Annexes
-  { slug: "annexe-1-manuel-agent", titre: "Annexe 1 — Manuel de procédure de l'Agent", docId: "176ft7HXR_NUl9t5tkjVlRZB-5UnXFUyG0iH5rMEM8xw" },
+  { slug: "annexe-1-manuel-agent", titre: "Annexe 1 — Manuel de procédure de l'Agent", docId: "1SesgLPNLgCcLS4bXyJmBBWq8zGLzcMD8esa4DPWXLVM" },
   { slug: "annexe-2-grille", titre: "Annexe 2 — Grille générale des infractions", docId: "1K019XXTb4JL9LEoTH6rlorj_h4Ksb6Ru19pmdGXGLQY" },
-  { slug: "annexe-3-enqueteur", titre: "Annexe 3 — Guide de l'Enquêteur et des Mandats", docId: "1qcuF6-bum1FE2XgxsnygCyVaFq5uLVv3a0UE0Uaw7kw" },
-  { slug: "annexe-4-avocat", titre: "Annexe 4 — Guide de l'Avocat", docId: "1EfkgMiinrAKlVNjejqiN401EFIwdUzUT3wOvMJgH_Jw" },
-  { slug: "annexe-5-doj", titre: "Annexe 5 — Guide du DOJ (Procureur & Juge)", docId: "11xDCt6bLs_oX39Va3mO_onAcwX-VvxD6A91NQY88Tao" },
-  { slug: "annexe-6-citoyen", titre: "Annexe 6 — Guide du Citoyen", docId: "1pyG5ss4dXOx2gd6PPUkOjyWrj8FDIkcU9xYbHpMYSrM" },
-  { slug: "annexe-7-glossaire", titre: "Annexe 7 — Glossaire juridique", docId: "14rX3st4GjnJHRhw4sgf6rrVr0FfaZCa6fU00QusPcqs" },
+  { slug: "annexe-3-enqueteur", titre: "Annexe 3 — Guide de l'Enquêteur et des Mandats", docId: "1Evb-Ao6XKQnShJMfUUH3eWrZMuHf7vhArdfuqnWtnDs" },
+  { slug: "annexe-4-avocat", titre: "Annexe 4 — Guide de l'Avocat", docId: "1ikeEs-PboQh4v_85yOe2iqII6dr-1NFwYzF8gyLJY-8" },
+  { slug: "annexe-5-doj", titre: "Annexe 5 — Guide du DOJ (Procureur & Juge)", docId: "1CWuI4YxxT1upmjc1vCgczmH4Vrg2ByEP2zugSVF_KT4" },
+  { slug: "annexe-6-citoyen", titre: "Annexe 6 — Guide du Citoyen", docId: "1lINB0jRHBdYfNADapbLtjg3nRHHdTDF2G07kaCL6OF4" },
+  { slug: "annexe-7-glossaire", titre: "Annexe 7 — Glossaire juridique", docId: "1dhMtiqfrFKGO1FbKxGHnol0-srLgHHTJpHrclyi_kmE" },
   { slug: "annexe-8-decrets", titre: "Annexe 8 — Recueil des décrets de l'État", docId: "1MUrTZjMHfR1Bj3nYXrpDJrkCf2TTZVfK9GuxLWBGlic" },
 ];
 
