@@ -33,6 +33,8 @@ const REGIME_ORDRE: Record<Regime, number> = { A: 0, S: 1, P: 2, F: 3 };
 const REGIME_CLES: Regime[] = ["A", "S", "P", "F"];
 
 const PLAFOND_AMENDES = 5_000_000;
+// Cumul de toutes les aggravantes, générales et spéciales confondues (art. 22-3)
+const PLAFOND_AGGRAVANTES = 75;
 
 const COLONNES: Array<{ label: string; sortKey?: SortKey; align?: "right" | "center" }> = [
   { label: "Infraction", sortKey: "nom" },
@@ -46,11 +48,11 @@ const COLONNES: Array<{ label: string; sortKey?: SortKey; align?: "right" | "cen
 ];
 
 const AGG_GENERALES =
-  "+50 % chacune (art. 21) : récidive, préméditation, bande organisée, otage ou bouclier humain, victime agent ou représentant, victime vulnérable, cruauté.";
+  "+50 % chacune (art. 21) sur la détention et l'amende : récidive, préméditation, bande organisée, otage ou bouclier humain, victime agent ou représentant, victime vulnérable, cruauté. Cumul de toutes les aggravantes plafonné à +75 % (art. 22-3).";
 const AGG_SPECIALES =
-  "+25 % chacune (art. 22) : arme non constitutive, arme cat. 3, sans PPA, visage dissimulé, usurpation d'uniforme, Defcon 3+, refus d'obtempérer ou fuite, entrave à l'enquête, mineur impliqué.";
+  "+25 % chacune (art. 22) sur la détention et l'amende : arme non constitutive, arme cat. 3, sans PPA, visage dissimulé, usurpation d'uniforme, Defcon 3+, refus d'obtempérer ou fuite, entrave à l'enquête, mineur impliqué. Même plafond commun de +75 %.";
 const ATTENUANTES_TXT =
-  "−10 % chacune (art. 23), sans jamais descendre sous 50 % de la peine calculée après aggravantes.";
+  "−10 % chacune (art. 23) sur la détention et l'amende, sans jamais descendre sous 50 % des totaux calculés après aggravantes.";
 
 const norm = (s: string) =>
   s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
@@ -180,6 +182,36 @@ function Compteur({
   );
 }
 
+// Ligne du tableau de calcul du panneau : étape, détention, amende
+function LigneCalcul({
+  label,
+  note,
+  detention,
+  amende,
+  total = false,
+}: {
+  label: string;
+  note?: string;
+  detention: string;
+  amende: string;
+  total?: boolean;
+}) {
+  const cellule = total ? "border-t border-white/25 pt-1.5 text-base" : "py-0.5";
+  const montant = `${cellule} whitespace-nowrap pl-2 text-right ${
+    total ? "font-bold text-usa-gold" : "font-semibold"
+  }`;
+  return (
+    <tr className="align-top">
+      <th scope="row" className={`${cellule} pr-1 text-left ${total ? "font-bold" : "font-normal"}`}>
+        {label}
+        {note && <span className="block text-[11px] font-bold text-usa-gold">{note}</span>}
+      </th>
+      <td className={montant}>{detention}</td>
+      <td className={montant}>{amende}</td>
+    </tr>
+  );
+}
+
 const celluleBase = "border-b border-r border-usa-gray-medium px-2 py-1.5 align-top";
 
 function LienRef({
@@ -243,22 +275,39 @@ export default function GrilleClient({ refLinks }: { refLinks: Record<string, st
     [selection]
   );
 
+  // Ordre impératif du Livre I, art. 19-1 : base → concours → aggravantes → atténuantes.
+  // Les pourcentages portent sur les totaux cumulés de détention ET d'amende (art. 19-3) ;
+  // chaque étape est arrondie à la minute et au dollar, comme l'exemple de l'Annexe 2.
   const calc = useMemo(() => {
     const amendesAuto = selInfractions.filter((i) => !amendeManuelle(i));
     const amendesManuelles = selInfractions.filter(amendeManuelle);
-    const totalBrut = amendesAuto.reduce((s, i) => s + i.amendeNum, 0);
-    const plafondAtteint = totalBrut > PLAFOND_AMENDES;
-    const totalAmendes = Math.min(totalBrut, PLAFOND_AMENDES);
-
     const federale = selInfractions.some((i) => i.regime === "F");
-    const base = federale ? 0 : selInfractions.reduce((s, i) => s + i.peineMinutes, 0);
-    const pctAgg = aggGen * 50 + aggSpe * 25;
-    const apresAgg = base * (1 + pctAgg / 100);
-    const sansPlancher = apresAgg * (1 - (attenuantes * 10) / 100);
-    const plancher = apresAgg * 0.5;
-    const plancherApplique = attenuantes > 0 && sansPlancher < plancher;
-    const apresAtt = Math.max(sansPlancher, plancher);
-    const finale = tentative ? apresAtt / 2 : apresAtt;
+
+    // Base cumulée après concours (art. 20) ; la détention d'une peine fédérale est fixée par le Juge
+    const baseDet = federale ? 0 : selInfractions.reduce((s, i) => s + i.peineMinutes, 0);
+    const baseAmende = amendesAuto.reduce((s, i) => s + i.amendeNum, 0);
+
+    // Aggravantes (art. 21-22) : cumul plafonné à +75 % (art. 22-3), le surplus reste sans effet
+    const pctDemande = aggGen * 50 + aggSpe * 25;
+    const pctAgg = Math.min(pctDemande, PLAFOND_AGGRAVANTES);
+    const plafondAggAtteint = pctDemande >= PLAFOND_AGGRAVANTES;
+    const aggDet = Math.round(baseDet * (1 + pctAgg / 100));
+    const aggAmende = Math.round(baseAmende * (1 + pctAgg / 100));
+
+    // Atténuantes (art. 23) : −10 % chacune, plancher 50 % des montants calculés après aggravantes
+    const facteurDemande = 1 - (attenuantes * 10) / 100;
+    const plancherAtteint = attenuantes > 0 && facteurDemande <= 0.5;
+    const facteurAtt = Math.max(facteurDemande, 0.5);
+    const attDet = Math.round(aggDet * facteurAtt);
+    const attAmende = Math.round(aggAmende * facteurAtt);
+
+    // Tentative (art. 24-2) : moitié de la détention et moitié de l'amende
+    const finale = tentative ? Math.round(attDet / 2) : attDet;
+    const amendeAvantPlafond = tentative ? Math.round(attAmende / 2) : attAmende;
+
+    // Plafond global des amendes (art. 15-2), appliqué après tout le reste
+    const plafondAtteint = amendeAvantPlafond > PLAFOND_AMENDES;
+    const totalAmendes = Math.min(amendeAvantPlafond, PLAFOND_AMENDES);
 
     const regimeMax = selInfractions.reduce<Regime>(
       (max, i) => (REGIME_ORDRE[i.regime] > REGIME_ORDRE[max] ? i.regime : max),
@@ -267,18 +316,27 @@ export default function GrilleClient({ refLinks }: { refLinks: Record<string, st
 
     return {
       amendesManuelles,
-      totalAmendes,
-      plafondAtteint,
       federale,
-      base,
+      baseDet,
+      baseAmende,
+      pctDemande,
       pctAgg,
-      apresAgg,
-      plancherApplique,
-      apresAtt,
+      plafondAggAtteint,
+      aggDet,
+      aggAmende,
+      plancherAtteint,
+      attDet,
+      attAmende,
       finale,
+      amendeAvantPlafond,
+      plafondAtteint,
+      totalAmendes,
       regimeMax,
     };
   }, [selInfractions, aggGen, aggSpe, attenuantes, tentative]);
+
+  // Colonne détention du tableau de calcul : sans objet quand la durée relève du Juge
+  const det = (minutes: number) => (calc.federale ? "—" : fmtMinutes(minutes));
 
   const nbFiltres = cats.size + niveaux.size + regimes.size;
 
@@ -744,60 +802,78 @@ export default function GrilleClient({ refLinks }: { refLinks: Record<string, st
                     <span>
                       <strong>Tentative</strong>
                       <span className="block text-[11px] text-white/70">
-                        Art. 24 : la détention est divisée par 2.
+                        Art. 24 : la détention et l&rsquo;amende sont divisées par 2.
                       </span>
                     </span>
                   </label>
 
-                  {calc.federale ? (
+                  {calc.federale && (
                     <p className="bg-usa-red p-3 text-sm font-bold leading-snug">
                       PEINE FÉDÉRALE — durée fixée par le Juge. Les amendes restent
-                      cumulées ci-dessous.
+                      cumulées et modulées ci-dessous.
                     </p>
-                  ) : (
-                    <div className="border border-white/25 bg-white/5 p-3 text-sm">
-                      <h4 className="mb-1.5 text-xs font-bold uppercase tracking-wide text-usa-gold">
-                        Calcul de la détention (art. 19)
-                      </h4>
-                      <dl className="space-y-1 tabular-nums">
-                        <div className="flex justify-between gap-3">
-                          <dt>Base cumulée (art. 20)</dt>
-                          <dd className="font-semibold">{fmtMinutes(calc.base)}</dd>
-                        </div>
-                        {calc.pctAgg > 0 && (
-                          <div className="flex justify-between gap-3">
-                            <dt>Aggravantes (+{calc.pctAgg} %)</dt>
-                            <dd className="font-semibold">{fmtMinutes(calc.apresAgg)}</dd>
-                          </div>
+                  )}
+                  <div className="border border-white/25 bg-white/5 p-3 text-sm">
+                    <h4 className="text-xs font-bold uppercase tracking-wide text-usa-gold">
+                      Calcul de la peine (art. 19)
+                    </h4>
+                    <p className="mb-2 mt-0.5 text-[11px] leading-snug text-white/70">
+                      Les pourcentages portent sur les totaux cumulés de détention et
+                      d&rsquo;amende obtenus après concours (art. 19-3).
+                    </p>
+                    <table className="w-full border-collapse tabular-nums">
+                      <thead>
+                        <tr className="text-[11px] uppercase tracking-wide text-white/70">
+                          <th scope="col" className="pb-1 text-left font-bold">
+                            Étape
+                          </th>
+                          <th scope="col" className="pb-1 pl-2 text-right font-bold">
+                            Détention
+                          </th>
+                          <th scope="col" className="pb-1 pl-2 text-right font-bold">
+                            Amende
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <LigneCalcul
+                          label="Base cumulée (art. 20)"
+                          detention={det(calc.baseDet)}
+                          amende={fmtDollars(calc.baseAmende)}
+                        />
+                        {calc.pctDemande > 0 && (
+                          <LigneCalcul
+                            label={`Aggravantes (+${calc.pctAgg} %)`}
+                            note={calc.plafondAggAtteint ? "plafond +75 % atteint" : undefined}
+                            detention={det(calc.aggDet)}
+                            amende={fmtDollars(calc.aggAmende)}
+                          />
                         )}
                         {attenuantes > 0 && (
-                          <div className="flex justify-between gap-3">
-                            <dt>
-                              Atténuantes (−{attenuantes * 10} %)
-                              {calc.plancherApplique && (
-                                <span className="block text-[11px] text-usa-gold">
-                                  plancher 50 % appliqué
-                                </span>
-                              )}
-                            </dt>
-                            <dd className="font-semibold">{fmtMinutes(calc.apresAtt)}</dd>
-                          </div>
+                          <LigneCalcul
+                            label={`Atténuantes (−${attenuantes * 10} %)`}
+                            note={calc.plancherAtteint ? "plancher 50 % atteint" : undefined}
+                            detention={det(calc.attDet)}
+                            amende={fmtDollars(calc.attAmende)}
+                          />
                         )}
                         {tentative && (
-                          <div className="flex justify-between gap-3">
-                            <dt>Tentative (÷ 2)</dt>
-                            <dd className="font-semibold">{fmtMinutes(calc.finale)}</dd>
-                          </div>
+                          <LigneCalcul
+                            label="Tentative (÷ 2)"
+                            detention={det(calc.finale)}
+                            amende={fmtDollars(calc.amendeAvantPlafond)}
+                          />
                         )}
-                        <div className="flex justify-between gap-3 border-t border-white/25 pt-1.5 text-base">
-                          <dt className="font-bold">Détention totale</dt>
-                          <dd className="font-bold text-usa-gold">
-                            {fmtMinutes(calc.finale)}
-                          </dd>
-                        </div>
-                      </dl>
-                    </div>
-                  )}
+                        <LigneCalcul
+                          total
+                          label="Peine totale"
+                          note={calc.plafondAtteint ? "plafond 5 000 000 $ atteint" : undefined}
+                          detention={calc.federale ? "fixée par le Juge" : fmtMinutes(calc.finale)}
+                          amende={fmtDollars(calc.totalAmendes)}
+                        />
+                      </tbody>
+                    </table>
+                  </div>
                 </section>
               </div>
             </div>

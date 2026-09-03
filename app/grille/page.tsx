@@ -33,21 +33,34 @@ export default function GrillePage() {
         <ul className="list-disc space-y-1 pl-5">
           <li>
             <strong>Concours d&rsquo;infractions (art. 20) :</strong> les peines de
-            détention <strong>se cumulent</strong>, et les amendes se cumulent, plafonnées
-            à <strong>5 000 000 $</strong> par procédure.
+            détention <strong>se cumulent</strong>, et les amendes se cumulent.
+          </li>
+          <li>
+            <strong>Assiette des pourcentages (art. 19-3) :</strong> aggravantes et
+            atténuantes s&rsquo;appliquent aux{" "}
+            <strong>totaux cumulés de détention et d&rsquo;amende</strong> obtenus après
+            concours, pas infraction par infraction.
           </li>
           <li>
             <strong>Circonstances aggravantes (art. 21-22) :</strong> majoration de{" "}
-            <strong>+50 %</strong> (générales) ou <strong>+25 %</strong> (spéciales) sur la
-            détention, cumulables sans plafond.
+            <strong>+50 %</strong> (générales) ou <strong>+25 %</strong> (spéciales) ;
+            cumul <strong>plafonné à +75 %</strong>, générales et spéciales confondues
+            (art. 22-3).
           </li>
           <li>
             <strong>Circonstances atténuantes (art. 23) :</strong> réduction de{" "}
-            <strong>−10 %</strong> chacune, sans descendre sous <strong>50 %</strong> de la
-            peine après aggravantes.
+            <strong>−10 %</strong> chacune, sans descendre sous <strong>50 %</strong> des
+            totaux calculés après aggravantes.
           </li>
           <li>
-            <strong>Tentative (art. 24) :</strong> détention divisée par 2.
+            <strong>Tentative (art. 24) :</strong> détention et amende divisées par 2.{" "}
+            <strong>Complicité (art. 17) :</strong> amende pleine, détention divisée par 2
+            (à appliquer manuellement).
+          </li>
+          <li>
+            <strong>Plafond des amendes (art. 15-2) :</strong>{" "}
+            <strong>5 000 000 $</strong> par procédure, appliqué après tous les
+            modificateurs.
           </li>
           <li>
             Détail complet :{" "}
