@@ -9,28 +9,28 @@ import path from "node:path";
 
 const DOCS = [
   // Livres
-  { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "1pUU-qPXALomLi9oefo_6RYNMvZrmDrVcsDKKSmcV6-0" },
-  { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1kPK59am5VxxFTeZpoeFOxxZVb3qQ9gFUnDsjb8ZS17o" },
+  { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "1epQeJ7xHPSffR1da3eHzbzpNA5io-2M1ptyG3MGlOOU" },
+  { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1QGvGKx-xrI5NQA4_TsroqmUjszl39BRJxhiP5UTLIrY" },
   { slug: "livre-iii", titre: "Livre III — De la procédure pénale", docId: "13rf-8NP_U0-swvqawzxb0wNBo-pjbCU50w17O0gzOtM" },
   { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1zOaF7TR2TaCV4rdQn78G-mZQ3AWEtCG2XM8HGQSjZhI" },
-  { slug: "livre-v", titre: "Livre V — Des infractions contre les personnes et les biens", docId: "1likYv_gu2wqIPyswSxFuUJ3cfjX17sAr1Z9GteY0kFY" },
-  { slug: "livre-vi", titre: "Livre VI — Des infractions économiques et financières", docId: "1xcrdR4EBDjfi9mHY2W8lVcZi_V3n9le58zZV0Im6ksE" },
+  { slug: "livre-v", titre: "Livre V — Des infractions contre les personnes et les biens", docId: "16XsP6mCR2bqFNWKILLIVFtFJ-uRHHV87MlxrzLSvfN0" },
+  { slug: "livre-vi", titre: "Livre VI — Des infractions économiques et financières", docId: "1taq2vTus4tuvjsERPT0avXdQZCnBVf3PRWLTdqI_5U0" },
   { slug: "livre-vii", titre: "Livre VII — Des infractions spéciales", docId: "1sIXUYSe0u43CcKHSSPmTkGBzoGcQuAjaI54c62xNYl8" },
   { slug: "livre-viii", titre: "Livre VIII — Du Code civil", docId: "14eIbtyom2dfu9cAXWO_JnEAroXGAdkrQ9_zO8AIWtT4" },
-  { slug: "livre-ix", titre: "Livre IX — Du Code du travail et des entreprises", docId: "1PgPvnXnBgTqa7kBimGI8T0JybVYxAinGz3vb8UMKr-Q" },
+  { slug: "livre-ix", titre: "Livre IX — Du Code du travail et des entreprises", docId: "1c7Du_mkiEp7iWGSS3VVxtTdqHo0BXrHQcnCdqHdNccs" },
   { slug: "livre-x", titre: "Livre X — Du Code de la santé", docId: "15_TZIVCfiMaYFwL0Vn14ACQj_3cE4Ciaa4llXpUK-w4" },
-  { slug: "livre-xi", titre: "Livre XI — Du Code de la route et du Code aérien", docId: "1OEalWMxR2eNKQeZm-P4SPhWCoDYsQZYAKA9tr7eHeXQ" },
+  { slug: "livre-xi", titre: "Livre XI — Du Code de la route et du Code aérien", docId: "19PLF6i0BacsG2e9WHbNHlkhw6XtRsuowr9i-yaHIJcQ" },
   { slug: "livre-xii", titre: "Livre XII — Du Code électoral", docId: "1hGe4nYrVUZZ0iyyptAAxOT5Ysfm6_5xdKGKLXRH09Kc" },
   { slug: "livre-xiii", titre: "Livre XIII — Des États d'urgence (Defcon)", docId: "17FuK6rBHEMrcYw3VwLsDA4CLOyk9vX9iEQHDCJZjPbc" },
   // Annexes
   { slug: "annexe-1-manuel-agent", titre: "Annexe 1 — Manuel de procédure de l'Agent", docId: "176ft7HXR_NUl9t5tkjVlRZB-5UnXFUyG0iH5rMEM8xw" },
-  { slug: "annexe-2-grille", titre: "Annexe 2 — Grille générale des infractions", docId: "15b9xdIGZsneGDzO53En6jqPHOSoC-sgjplCn8RKXQus" },
+  { slug: "annexe-2-grille", titre: "Annexe 2 — Grille générale des infractions", docId: "1K019XXTb4JL9LEoTH6rlorj_h4Ksb6Ru19pmdGXGLQY" },
   { slug: "annexe-3-enqueteur", titre: "Annexe 3 — Guide de l'Enquêteur et des Mandats", docId: "1qcuF6-bum1FE2XgxsnygCyVaFq5uLVv3a0UE0Uaw7kw" },
   { slug: "annexe-4-avocat", titre: "Annexe 4 — Guide de l'Avocat", docId: "1EfkgMiinrAKlVNjejqiN401EFIwdUzUT3wOvMJgH_Jw" },
   { slug: "annexe-5-doj", titre: "Annexe 5 — Guide du DOJ (Procureur & Juge)", docId: "11xDCt6bLs_oX39Va3mO_onAcwX-VvxD6A91NQY88Tao" },
   { slug: "annexe-6-citoyen", titre: "Annexe 6 — Guide du Citoyen", docId: "1pyG5ss4dXOx2gd6PPUkOjyWrj8FDIkcU9xYbHpMYSrM" },
   { slug: "annexe-7-glossaire", titre: "Annexe 7 — Glossaire juridique", docId: "14rX3st4GjnJHRhw4sgf6rrVr0FfaZCa6fU00QusPcqs" },
-  { slug: "annexe-8-decrets", titre: "Annexe 8 — Recueil des décrets de l'État", docId: "1OPsyVmBcmGKD_58m7SJszlq5wZRMBIASnQAwTtH_3D4" },
+  { slug: "annexe-8-decrets", titre: "Annexe 8 — Recueil des décrets de l'État", docId: "1MUrTZjMHfR1Bj3nYXrpDJrkCf2TTZVfK9GuxLWBGlic" },
 ];
 
 const OUT_DIR = path.join(process.cwd(), "content");

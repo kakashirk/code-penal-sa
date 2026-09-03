@@ -95,7 +95,7 @@ Violences au sein du couple;Personnes;2;40 000 $;40000;30 Min;30;S;Facture médi
 Non-assistance à personne en danger;Personnes;3;30 000 $;30000;40 Min;40;P;Interrogatoire obligatoire;V-1
 Agression sexuelle;Personnes;3;150 000 $;150000;1 H;60;P;50 % amende → victime;V-1
 Homicide involontaire;Personnes;3;75 000 $;75000;2 H;120;P;Saisie armes · retrait PPA;V-2
-Tentative d'homicide sur civil;Personnes;3;100 000 $;100000;1 H;60;P;Saisie armes;V-2
+Tentative d'homicide sur civil;Personnes;3;100 000 $;100000;1 H 30;90;P;Saisie armes;V-2
 Homicide volontaire sur civil;Personnes;3;250 000 $;250000;3 H;180;P;Saisie armes · retrait PPA;V-2
 Tentative d'homicide sur représentant de l'État;Personnes;3;125 000 $;125000;2 H;120;P;Saisie armes;V-2
 Homicide sur représentant de l'État;Personnes;4;400 000 $;400000;Fédérale;999;F;Saisie totalité des biens;V-2
@@ -190,6 +190,7 @@ Entrave au fonctionnement d'une entreprise;Économique;2;12 000 $;12000;20 Min;2
 Abus de biens sociaux;Économique;3;100 000 $;100000;40 Min;40;P;Remboursement · interdiction de gérer;VI-10
 Comptabilité falsifiée;Économique;3;120 000 $;120000;40 Min;40;P;Transmission sous astreinte;VI-10
 Fraude aux subventions d'État;Économique;3;100 000 $;100000;40 Min;40;P;Remboursement intégral;VI-11
+Fraude fiscale;Économique;3;Triple du montant éludé;0;40 Min;40;P;Régularisation intégrale · interdiction de gérer possible;VI-11
 Revente anticipée d'un fonds de commerce;Économique;2;3 000 000 $;3000000;—;0;A;—;IX-10
 Intrusion dans un système financier de l'État;Économique;3;150 000 $;150000;50 Min;50;P;Saisie matériel;VI-12
 Atteinte majeure aux systèmes financiers;Économique;4;500 000 $;500000;Fédérale;999;F;Saisie totalité des biens;VI-12

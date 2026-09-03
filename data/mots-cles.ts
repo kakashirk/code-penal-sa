@@ -121,6 +121,7 @@ const MOTS_EXACTS: Record<string, string[]> = {
   "Abus de biens sociaux": ["se servir dans la caisse", "voler son entreprise"],
   "Comptabilité falsifiée": ["fausse comptabilité", "trafiquer les comptes"],
   "Fraude aux subventions d'État": ["détourner les subventions"],
+  "Fraude fiscale": ["impôt", "taxe", "fisc", "dissimulation de chiffre d'affaires"],
   "Attaque d'un convoi de fonds": ["braquage de convoi", "fourgon blindé"],
   "Attaque d'un convoi SASP": ["braquage de convoi", "attaquer la police"],
   "Franchissement d'un périmètre de sécurité": ["passer le périmètre", "rubalise", "cordon de police"],
