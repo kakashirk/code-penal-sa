@@ -59,6 +59,8 @@ const MOTS_EXACTS: Record<string, string[]> = {
   "Utilisation d'une arme à mauvais escient": ["tirer en l'air", "warning shot"],
   "Port d'un gilet pare-balles": ["gilet", "kevlar"],
   "Port d'un casque balistique": ["casque militaire", "casque lourd"],
+  "Possession de composants d'équipement balistique": ["kevlar", "plaque", "plaque balistique", "gilet", "protection balistique"],
+  "Fabrication d'équipement balistique": ["kevlar", "labo kevlar", "atelier", "plaque balistique", "protection balistique"],
   "Participation à une fusillade": ["fusillade", "shooting", "échange de tirs"],
   "Association de malfaiteurs": ["gang", "complot", "bande"],
   "Membre d'un réseau de crime organisé": ["gang", "mafia", "cartel", "orga"],

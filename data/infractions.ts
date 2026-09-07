@@ -138,6 +138,8 @@ Possession d'arme illégale catégorie 2;Armes;3;115 000 $;115000;35 Min;35;P;Sa
 Vente illégale d'arme catégorie 2;Armes;3;150 000 $;150000;35 Min;35;P;Saisie;V-8
 Possession d'arme illégale catégorie 3;Armes;3;250 000 $;250000;1 H;60;P;Saisie;V-8
 Vente illégale d'arme catégorie 3;Armes;3;350 000 $;350000;1 H;60;P;Saisie;V-8
+Possession de composants d'équipement balistique;Armes;3;2 000 $ / unité;2000;40 Min;40;P;Saisie totalité des composants;V-8
+Fabrication d'équipement balistique;Armes;3;200 000 $;200000;55 Min;55;P;Saisie composants + matériel + locaux;V-8
 Trafic d'armes;Armes;4;400 000 $;400000;Fédérale;999;F;Saisie armes + fonds + transports;V-8
 Possession de weed;Stupéfiants;2;160 $ / unité;160;20 Min;20;S;Saisie totalité;V-9
 Possession de LSD;Stupéfiants;2;150 $ / unité;150;25 Min;25;S;Saisie totalité;V-9
