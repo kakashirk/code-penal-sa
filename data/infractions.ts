@@ -124,6 +124,7 @@ Dégradation de matériel public;Dégradations;2;15 000 $;15000;10 Min;10;S;Remi
 Possession de biens servant à des actes illégaux;Dégradations;2;25 000 $ / unité;25000;20 Min;20;S;Saisie totalité;V-6
 Intrusion dans une propriété privée;Dégradations;2;25 000 $;25000;30 Min;30;S;—;V-6
 Intrusion dans un complexe gouvernemental;Dégradations;3;75 000 $;75000;50 Min;50;P;Saisie armes · retrait PPA;V-6
+Possession de munitions illégales;Armes;2;300 $ / unité;300;20 Min;20;S;Saisie totalité des munitions;V-8
 Port d'un casque balistique;Armes;2;20 000 $;20000;10 Min;10;S;Confiscation · palpation;V-7
 Port d'un gilet pare-balles;Armes;2;25 000 $;25000;20 Min;20;S;Confiscation · palpation;V-7
 Possession d'arme blanche illégale;Armes;2;19 000 $;19000;20 Min;20;S;Confiscation;V-8

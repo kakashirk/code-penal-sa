@@ -57,6 +57,7 @@ const MOTS_EXACTS: Record<string, string[]> = {
   "Arme blanche sortie en public": ["couteau sorti", "sortir un couteau"],
   "Possession d'arme blanche illégale": ["couteau", "machette", "poignard"],
   "Utilisation d'une arme à mauvais escient": ["tirer en l'air", "warning shot"],
+  "Possession de munitions illégales": ["munition", "munitions", "balle", "balles", "cartouche", "cartouches", "9mm", "chargeur"],
   "Port d'un gilet pare-balles": ["gilet", "kevlar"],
   "Port d'un casque balistique": ["casque militaire", "casque lourd"],
   "Possession de composants d'équipement balistique": ["kevlar", "plaque", "plaque balistique", "gilet", "protection balistique"],

@@ -10,10 +10,10 @@ import path from "node:path";
 const DOCS = [
   // Livres
   { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "1OxqYdF6giJUwKi01eR__LNV5wA8rz8ZUOL4TYwtan7U" },
-  { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1JuqfZALq6x3DUR4WPa5dAUeKkHEWecV8umacZ6iRZj0" },
+  { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1olkP93dKiL1bX06z5rnVNVwITkw0qwYNU3tqY5Lcm-E" },
   { slug: "livre-iii", titre: "Livre III — De la procédure pénale", docId: "13rf-8NP_U0-swvqawzxb0wNBo-pjbCU50w17O0gzOtM" },
   { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1zOaF7TR2TaCV4rdQn78G-mZQ3AWEtCG2XM8HGQSjZhI" },
-  { slug: "livre-v", titre: "Livre V — Des infractions contre les personnes et les biens", docId: "1GThNXp-68fG7aQBVAIiEcRUbigqtCmXf4wp02BCykt0" },
+  { slug: "livre-v", titre: "Livre V — Des infractions contre les personnes et les biens", docId: "17UEGZEXAEEhrq4NDF0KDr8fu9_va-PLoVsxGrPeQPdA" },
   { slug: "livre-vi", titre: "Livre VI — Des infractions économiques et financières", docId: "1yNPdhgEVrgYoGLbLh1Tb3elgW4CvEQSXq28mz6MNzI4" },
   { slug: "livre-vii", titre: "Livre VII — Des infractions spéciales", docId: "1sIXUYSe0u43CcKHSSPmTkGBzoGcQuAjaI54c62xNYl8" },
   { slug: "livre-viii", titre: "Livre VIII — Du Code civil", docId: "14eIbtyom2dfu9cAXWO_JnEAroXGAdkrQ9_zO8AIWtT4" },
@@ -24,12 +24,12 @@ const DOCS = [
   { slug: "livre-xiii", titre: "Livre XIII — Des États d'urgence (Defcon)", docId: "17FuK6rBHEMrcYw3VwLsDA4CLOyk9vX9iEQHDCJZjPbc" },
   // Annexes
   { slug: "annexe-1-manuel-agent", titre: "Annexe 1 — Manuel de procédure de l'Agent", docId: "1PWZC876MHDo-0mJ4ET39EhwvDfTPbPvhPz3vng8BrDE" },
-  { slug: "annexe-2-grille", titre: "Annexe 2 — Grille générale des infractions", docId: "1Ttc_z28LTR1cYl4uxM7a6kvK72Uxs6dQ56wWEn43Yws" },
+  { slug: "annexe-2-grille", titre: "Annexe 2 — Grille générale des infractions", docId: "1-enWsTSrsZfqrHco-0hqO0slth5DpAe4GNn1eC3adaA" },
   { slug: "annexe-3-enqueteur", titre: "Annexe 3 — Guide de l'Enquêteur et des Mandats", docId: "1s0aCS9DkI2_Go7cZUWm7FdmY-jzIok-4qQ2TqKXWPuY" },
   { slug: "annexe-4-avocat", titre: "Annexe 4 — Guide de l'Avocat", docId: "135ApRrGoiPsrGereKoALh9Xu24xXQWUl-avqkqK_KG8" },
   { slug: "annexe-5-doj", titre: "Annexe 5 — Guide du DOJ (Procureur & Juge)", docId: "1CWuI4YxxT1upmjc1vCgczmH4Vrg2ByEP2zugSVF_KT4" },
   { slug: "annexe-6-citoyen", titre: "Annexe 6 — Guide du Citoyen", docId: "1EbBMg4av2qluxuiXYJ5wAnWCmZUmZivAJj7HcFZ0h38" },
-  { slug: "annexe-7-glossaire", titre: "Annexe 7 — Glossaire juridique", docId: "16-LU5myPv8BCZjmnC9SE_xLezFw9wvLE-JfJhU09uZ8" },
+  { slug: "annexe-7-glossaire", titre: "Annexe 7 — Glossaire juridique", docId: "1EJ4g7h8_XFpAHF6sFMDOho3aCqubz0mbPdy7QOt4csk" },
   { slug: "annexe-8-decrets", titre: "Annexe 8 — Recueil des décrets de l'État", docId: "1MUrTZjMHfR1Bj3nYXrpDJrkCf2TTZVfK9GuxLWBGlic" },
 ];
 
