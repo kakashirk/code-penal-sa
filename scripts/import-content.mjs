@@ -15,7 +15,7 @@ const DOCS = [
   { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1zOaF7TR2TaCV4rdQn78G-mZQ3AWEtCG2XM8HGQSjZhI" },
   { slug: "livre-v", titre: "Livre V — Des infractions contre les personnes et les biens", docId: "17UEGZEXAEEhrq4NDF0KDr8fu9_va-PLoVsxGrPeQPdA" },
   { slug: "livre-vi", titre: "Livre VI — Des infractions économiques et financières", docId: "1yNPdhgEVrgYoGLbLh1Tb3elgW4CvEQSXq28mz6MNzI4" },
-  { slug: "livre-vii", titre: "Livre VII — Des infractions spéciales", docId: "1sIXUYSe0u43CcKHSSPmTkGBzoGcQuAjaI54c62xNYl8" },
+  { slug: "livre-vii", titre: "Livre VII — Des infractions spéciales", docId: "1Hb1M4ccK9CmppXAYj75hn7z8TDoAn-lZdjAC3CEMZAI" },
   { slug: "livre-viii", titre: "Livre VIII — Du Code civil", docId: "14eIbtyom2dfu9cAXWO_JnEAroXGAdkrQ9_zO8AIWtT4" },
   { slug: "livre-ix", titre: "Livre IX — Du Code du travail et des entreprises", docId: "1c7Du_mkiEp7iWGSS3VVxtTdqHo0BXrHQcnCdqHdNccs" },
   { slug: "livre-x", titre: "Livre X — Du Code de la santé", docId: "15_TZIVCfiMaYFwL0Vn14ACQj_3cE4Ciaa4llXpUK-w4" },
