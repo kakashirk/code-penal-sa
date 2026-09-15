@@ -9,13 +9,13 @@ import path from "node:path";
 
 const DOCS = [
   // Livres
-  { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "11dkNfcz651iMlRVnKUopnJMBCAnYvrSRSzxTNqEJtRc" },
-  { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1olkP93dKiL1bX06z5rnVNVwITkw0qwYNU3tqY5Lcm-E" },
-  { slug: "livre-iii", titre: "Livre III — De la procédure pénale", docId: "13rf-8NP_U0-swvqawzxb0wNBo-pjbCU50w17O0gzOtM" },
-  { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1zOaF7TR2TaCV4rdQn78G-mZQ3AWEtCG2XM8HGQSjZhI" },
+  { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "1-U3SPtmKo_k2It7hHYqK170xuwaooH2pgeCFPgzZ5no" },
+  { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1sA68BWSLr31_4YENSqFrLmEv1lwbT8ESrDUT1WCzK5E" },
+  { slug: "livre-iii", titre: "Livre III — De la procédure pénale", docId: "1JGcuOf4dXFnIBs87SrhoQ4nES9VUjVxzodvTKKnfqdU" },
+  { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1ArF06ExLTQYOFmU80BKS4zQXYCSmlQJ-U-3r4WqEZ58" },
   { slug: "livre-v", titre: "Livre V — Des infractions contre les personnes et les biens", docId: "1nIiChClZ-sisQldalgjFmXZlbIiz5d_Hq9NXqA5jzrg" },
   { slug: "livre-vi", titre: "Livre VI — Des infractions économiques et financières", docId: "1yNPdhgEVrgYoGLbLh1Tb3elgW4CvEQSXq28mz6MNzI4" },
-  { slug: "livre-vii", titre: "Livre VII — Des infractions spéciales", docId: "1Hb1M4ccK9CmppXAYj75hn7z8TDoAn-lZdjAC3CEMZAI" },
+  { slug: "livre-vii", titre: "Livre VII — Des infractions spéciales", docId: "1FF4Awxpp8naWqDkreLh4QY2jGUE_4bgaLtdsyTZlDtE" },
   { slug: "livre-viii", titre: "Livre VIII — Du Code civil", docId: "14eIbtyom2dfu9cAXWO_JnEAroXGAdkrQ9_zO8AIWtT4" },
   { slug: "livre-ix", titre: "Livre IX — Du Code du travail et des entreprises", docId: "1c7Du_mkiEp7iWGSS3VVxtTdqHo0BXrHQcnCdqHdNccs" },
   { slug: "livre-x", titre: "Livre X — Du Code de la santé", docId: "15_TZIVCfiMaYFwL0Vn14ACQj_3cE4Ciaa4llXpUK-w4" },
