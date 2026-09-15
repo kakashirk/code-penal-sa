@@ -13,7 +13,7 @@ export const CATEGORIES = [
   "Armes",
   "Stupéfiants",
   "Autorité & justice",
-  "Crime organisé",
+  "Crime organisé & crimes contre l'État",
   "Économique",
   "Probité",
   "Ordre public",
@@ -166,11 +166,12 @@ Violation du contrôle judiciaire;Autorité & justice;3;50 000 $;50000;45 Min;45
 Destruction / dissimulation de preuve;Autorité & justice;3;100 000 $;100000;55 Min;55;P;Amende portée aux éléments détruits;V-12
 Tentative d'évasion;Autorité & justice;3;300 000 $;300000;1 H;60;P;—;V-13
 Évasion / organisation d'évasion;Autorité & justice;4;400 000 $;400000;Fédérale;999;F;Saisie totalité · s'ajoute au reliquat;V-13
-Participation à une fusillade;Crime organisé;3;60 000 $;60000;40 Min;40;P;Saisie armes;V-14
-Association de malfaiteurs;Crime organisé;3;80 000 $;80000;50 Min;50;P;Interrogatoire obligatoire;V-14
-Membre d'un réseau de crime organisé;Crime organisé;3;200 000 $;200000;1 H;60;P;Saisie armes;V-14
-Chef d'un réseau de crime organisé;Crime organisé;4;500 000 $;500000;Fédérale;999;F;Saisie totalité des biens;V-14
-Attentat;Crime organisé;4;500 000 $;500000;Fédérale;999;F;Saisie totalité des biens;V-15
+Participation à une fusillade;Crime organisé & crimes contre l'État;3;60 000 $;60000;40 Min;40;P;Saisie armes;V-14
+Association de malfaiteurs;Crime organisé & crimes contre l'État;3;80 000 $;80000;50 Min;50;P;Interrogatoire obligatoire;V-14
+Membre d'un réseau de crime organisé;Crime organisé & crimes contre l'État;3;200 000 $;200000;1 H;60;P;Saisie armes;V-14
+Chef d'un réseau de crime organisé;Crime organisé & crimes contre l'État;4;500 000 $;500000;Fédérale;999;F;Saisie totalité des biens;V-14
+Attentat;Crime organisé & crimes contre l'État;4;500 000 $;500000;Fédérale;999;F;Saisie totalité des biens;V-15
+Haute trahison;Crime organisé & crimes contre l'État;4;500 000 $;500000;Fédérale;999;F;Saisie de la totalité des biens · Retrait du PPA · Destitution et interdiction définitive d'exercer si agent public;V-15 bis
 Escroquerie ≤ 90 000 $;Économique;2;25 000 à 100 000 $;100000;25 Min;25;S;Remboursement victime;VI-1
 Escroquerie > 90 000 $;Économique;3;200 000 $;200000;45 Min;45;P;Remboursement victime;VI-1
 Abus de confiance;Économique;2;30 000 $;30000;25 Min;25;S;Restitution;VI-2

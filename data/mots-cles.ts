@@ -67,6 +67,7 @@ const MOTS_EXACTS: Record<string, string[]> = {
   "Membre d'un réseau de crime organisé": ["gang", "mafia", "cartel", "orga"],
   "Chef d'un réseau de crime organisé": ["chef de gang", "parrain", "boss", "leader d'orga"],
   "Attentat": ["terrorisme", "bombe", "explosion"],
+  "Haute trahison": ["trahison", "traître", "traitre", "haute trahison", "ralliement", "taupe", "ripou", "agent double", "retourné", "infiltré", "félonie"],
   "Conduite sous alcool": ["alcool au volant", "ivresse", "conduite en état d'ivresse", "bourré au volant"],
   "Conduite sous stupéfiants": ["drogué au volant", "conduite sous drogue"],
   "Conduite dangereuse": ["rodéo urbain", "chauffard"],

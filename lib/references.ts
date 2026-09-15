@@ -35,10 +35,12 @@ export function buildReferenceLinks(): Record<string, string> {
   const refs = [...INFRACTIONS.map((inf) => inf.reference), ...REFS_SUPPLEMENTAIRES];
   for (const ref of refs) {
     if (liens[ref]) continue;
-    const m = ref.match(/^([IVXLC]+)-(\d+)$/);
+    // Accepte un suffixe « bis »/« ter » (ex. « V-15 bis »).
+    const m = ref.match(/^([IVXLC]+)-(\d+)(?:\s+(bis|ter))?$/);
     if (!m) continue;
     const slug = ROMAIN_VERS_SLUG[m[1]];
     if (!slug) continue;
+    const suffixe = m[3] ? `\\s+${m[3]}` : "(?!\\s+(?:bis|ter)\\b)";
 
     let doc = cache.get(slug);
     if (doc === undefined) {
@@ -48,7 +50,7 @@ export function buildReferenceLinks(): Record<string, string> {
 
     let href = `/livres/${slug}`;
     if (doc) {
-      const motif = new RegExp(`^art(?:icle)?\\.?\\s*${m[2]}\\b`);
+      const motif = new RegExp(`^art(?:icle)?\\.?\\s*${m[2]}${suffixe}\\b`);
       const cible = doc.toc.find((t) => motif.test(norm(t.text)));
       if (cible) href = `/livres/${slug}#${cible.slug}`;
     }
