@@ -9,10 +9,10 @@ import path from "node:path";
 
 const DOCS = [
   // Livres
-  { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "1-U3SPtmKo_k2It7hHYqK170xuwaooH2pgeCFPgzZ5no" },
-  { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1sA68BWSLr31_4YENSqFrLmEv1lwbT8ESrDUT1WCzK5E" },
-  { slug: "livre-iii", titre: "Livre III — De la procédure pénale", docId: "1JGcuOf4dXFnIBs87SrhoQ4nES9VUjVxzodvTKKnfqdU" },
-  { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1ArF06ExLTQYOFmU80BKS4zQXYCSmlQJ-U-3r4WqEZ58" },
+  { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "1yEhNIGONLMoBivWv7gpGaKZJ9ob4oDl58aTcWEwRW_I" },
+  { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1SVb_XsSbW9-yOYsqU9n5no2FEJ7fX25hNcl_UixpB84" },
+  { slug: "livre-iii", titre: "Livre III — De la procédure pénale", docId: "1D4RjhHBJx5rmm_LS4qDUWKG1HPLCtQh_Ei3-BtUK1h0" },
+  { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1WeV1hlL2ttguRKtBU9snl2IRMfSBPWDtbLc6fqkd1qA" },
   { slug: "livre-v", titre: "Livre V — Des infractions contre les personnes et les biens", docId: "1nIiChClZ-sisQldalgjFmXZlbIiz5d_Hq9NXqA5jzrg" },
   { slug: "livre-vi", titre: "Livre VI — Des infractions économiques et financières", docId: "1yNPdhgEVrgYoGLbLh1Tb3elgW4CvEQSXq28mz6MNzI4" },
   { slug: "livre-vii", titre: "Livre VII — Des infractions spéciales", docId: "1FF4Awxpp8naWqDkreLh4QY2jGUE_4bgaLtdsyTZlDtE" },
