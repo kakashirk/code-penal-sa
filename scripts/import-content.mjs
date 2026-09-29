@@ -10,7 +10,7 @@ import path from "node:path";
 const DOCS = [
   // Livres
   { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "1yEhNIGONLMoBivWv7gpGaKZJ9ob4oDl58aTcWEwRW_I" },
-  { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1SVb_XsSbW9-yOYsqU9n5no2FEJ7fX25hNcl_UixpB84" },
+  { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1fDWBEKEBjItr_BbiUAYxmpCmdYQnmOabVMgDqbOWFqo" },
   { slug: "livre-iii", titre: "Livre III — De la procédure pénale", docId: "1D4RjhHBJx5rmm_LS4qDUWKG1HPLCtQh_Ei3-BtUK1h0" },
   { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1WeV1hlL2ttguRKtBU9snl2IRMfSBPWDtbLc6fqkd1qA" },
   { slug: "livre-v", titre: "Livre V — Des infractions contre les personnes et les biens", docId: "1lz2-D8m7sENxPCiWYOUFPyuuzJqngwpTcGj_fSncFU0" },
