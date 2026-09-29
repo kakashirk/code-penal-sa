@@ -71,6 +71,7 @@ const MOTS_EXACTS: Record<string, string[]> = {
   "Conduite sous alcool": ["alcool au volant", "ivresse", "conduite en état d'ivresse", "bourré au volant"],
   "Conduite sous stupéfiants": ["drogué au volant", "conduite sous drogue"],
   "Conduite dangereuse": ["rodéo urbain", "chauffard"],
+  "Go fast": ["go fast", "gofast", "convoi", "transport", "ouvreur", "suiveur", "course", "cargaison", "mule"],
   "Refus d'obtempérer": ["refus de s'arrêter", "course poursuite", "fuir la police", "ne pas s'arrêter au contrôle"],
   "Délit de fuite": ["fuite après accident", "s'enfuir", "partir sans s'arrêter"],
   "Cavale": ["fugitif", "en fuite", "recherché", "wanted"],

@@ -79,6 +79,7 @@ Conduite sous stupéfiants;Route;2;15 000 $;15000;30 Min;30;S;Fourrière (SASP);
 Conduite dangereuse;Route;2;15 000 $;15000;20 Min;20;S;Fourrière (SASP);XI-5
 Excès de vitesse > 50 km/h;Route;2;20 000 $;20000;20 Min;20;S;Fourrière (civile);XI-5
 Excès de vitesse > 100 km/h;Route;2;50 000 $;50000;30 Min;30;S;Fourrière (SASP) + retrait permis;XI-5
+Go fast;Route;2;8 000 $;8000;15 Min;15;S;Fourrière (SASP);XI-5
 Entrave / occupation du circuit aérien;Aérien;2;6 000 $;6000;20 Min;20;S;—;XI-9
 Vol sous les altitudes minimales;Aérien;2;20 000 $;20000;10 Min;10;S;—;XI-9
 Atterrissage hors zone autorisée;Aérien;2;25 000 $;25000;15 Min;15;S;—;XI-9
@@ -111,11 +112,11 @@ Vol avec violence (braquage sur civil);Vols & braquages;2;25 000 $;25000;25 Min;
 Vol de véhicule de fonction;Vols & braquages;3;30 000 $;30000;30 Min;30;P;Fourrière (SASP);V-4
 Cambriolage;Vols & braquages;3;15 000 $;15000;25 Min;25;P;Saisie butin · restitution;V-4
 Braquage d'ATM;Vols & braquages;3;10 000 $;10000;35 Min;35;P;Saisie du butin;V-5
-Vol à main armée — Épicerie;Vols & braquages;3;35 000 $;35000;30 Min;30;P;Saisie armes + butin;V-5
-Vol à main armée — Banque commerciale;Vols & braquages;3;150 000 $;150000;40 Min;40;P;Saisie armes + butin;V-5
+Vol à main armée — Épicerie;Vols & braquages;3;20 000 $;20000;30 Min;30;P;Saisie armes + butin;V-5
+Vol à main armée — Banque commerciale;Vols & braquages;3;90 000 $;90000;40 Min;40;P;Saisie armes + butin;V-5
 Attaque d'un convoi de fonds;Vols & braquages;3;100 000 $;100000;1 H;60;P;Saisie armes + butin;V-5
 Attaque d'un convoi SASP;Vols & braquages;3;150 000 $;150000;1 H;60;P;Saisie armes + fonds;V-5
-Vol à main armée — Bijouterie;Vols & braquages;3;200 000 $;200000;1 H;60;P;Saisie armes + butin;V-5
+Vol à main armée — Bijouterie;Vols & braquages;3;180 000 $;180000;1 H;60;P;Saisie armes + butin;V-5
 Vol à main armée — Banque centrale;Vols & braquages;4;200 000 $;200000;Fédérale;999;F;Saisie armes + butin;V-5
 Vol à main armée — Réserve fédérale;Vols & braquages;4;200 000 $;200000;Fédérale;999;F;Saisie armes + butin;V-5
 Dégradation de biens publics;Dégradations;2;5 000 $;5000;10 Min;10;S;Remise en état à charge;V-6
