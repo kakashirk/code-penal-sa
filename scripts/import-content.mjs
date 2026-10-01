@@ -9,7 +9,7 @@ import path from "node:path";
 
 const DOCS = [
   // Livres
-  { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "1yEhNIGONLMoBivWv7gpGaKZJ9ob4oDl58aTcWEwRW_I" },
+  { slug: "livre-i", titre: "Livre I — Constitution, Bill of Rights & Dispositions générales", docId: "1kaoiXVQfa5RkaFaaMpBAmMlPJQLh9tiyQvQANmOue6c" },
   { slug: "livre-ii", titre: "Livre II — Des Acts (Lois spéciales)", docId: "1ipJ4WUTM9apf_UfoAtBSYVtt-Yx3yBZep5Q83s-haxQ" },
   { slug: "livre-iii", titre: "Livre III — De la procédure pénale", docId: "1D4RjhHBJx5rmm_LS4qDUWKG1HPLCtQh_Ei3-BtUK1h0" },
   { slug: "livre-iv", titre: "Livre IV — Des mandats et des enquêtes", docId: "1WeV1hlL2ttguRKtBU9snl2IRMfSBPWDtbLc6fqkd1qA" },
@@ -28,7 +28,7 @@ const DOCS = [
   { slug: "annexe-3-enqueteur", titre: "Annexe 3 — Guide de l'Enquêteur et des Mandats", docId: "1s0aCS9DkI2_Go7cZUWm7FdmY-jzIok-4qQ2TqKXWPuY" },
   { slug: "annexe-4-avocat", titre: "Annexe 4 — Guide de l'Avocat", docId: "135ApRrGoiPsrGereKoALh9Xu24xXQWUl-avqkqK_KG8" },
   { slug: "annexe-5-doj", titre: "Annexe 5 — Guide du DOJ (Procureur & Juge)", docId: "1CWuI4YxxT1upmjc1vCgczmH4Vrg2ByEP2zugSVF_KT4" },
-  { slug: "annexe-6-citoyen", titre: "Annexe 6 — Guide du Citoyen", docId: "1EbBMg4av2qluxuiXYJ5wAnWCmZUmZivAJj7HcFZ0h38" },
+  { slug: "annexe-6-citoyen", titre: "Annexe 6 — Guide du Citoyen", docId: "1tHofozQsr_RDZbhfplnKy4pV1Fg5eKIL1hZajGX2He0" },
   { slug: "annexe-7-glossaire", titre: "Annexe 7 — Glossaire juridique", docId: "1NcIqn-plU180PMrBZooe77KImGoov6grbVEIv9QkuzM" },
   { slug: "annexe-8-decrets", titre: "Annexe 8 — Recueil des décrets de l'État", docId: "1MUrTZjMHfR1Bj3nYXrpDJrkCf2TTZVfK9GuxLWBGlic" },
 ];
